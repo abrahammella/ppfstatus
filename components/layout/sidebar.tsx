@@ -40,11 +40,18 @@ const ICON_BADGE = (
   </svg>
 );
 
+const ICON_LIST = (
+  <svg viewBox="0 0 20 20" fill="none" className="size-4" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" d="M5 5h12M5 10h12M5 15h12" />
+  </svg>
+);
+
 const ADMIN_NAV: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: ICON_DASHBOARD },
   { href: "/tablero", label: "Tablero", icon: ICON_BOARD },
   { href: "/tickets/nuevo", label: "Nuevo ticket", icon: ICON_PLUS },
   { href: "/clientes", label: "Clientes", icon: ICON_USERS },
+  { href: "/servicios", label: "Servicios", icon: ICON_LIST },
   { href: "/empleados", label: "Empleados", icon: ICON_BADGE },
 ];
 

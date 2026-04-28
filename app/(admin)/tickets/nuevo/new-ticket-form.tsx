@@ -1,8 +1,15 @@
 "use client";
 
 import { useActionState, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FormField,
+  FormSelect,
+  PrimaryButton,
+} from "@/components/ui/form-fields";
 import { createTicketAction, type NewTicketState } from "./actions";
 import type { Client } from "@/lib/schemas";
+import clsx from "clsx";
 
 interface VehicleOpt {
   id: string;
@@ -40,9 +47,9 @@ export function NewTicketForm({
   );
 
   return (
-    <form action={action} className="space-y-6">
-      <Section title="Cliente">
-        <Tabs
+    <form action={action} className="space-y-7">
+      <Section step={1} title="Cliente">
+        <Toggle
           value={clientMode}
           onChange={setClientMode}
           options={[
@@ -51,25 +58,64 @@ export function NewTicketForm({
           ]}
           name="clientMode"
         />
-        {clientMode === "existing" ? (
-          <Select
-            label="Cliente"
-            name="clientId"
-            value={clientId}
-            onChange={setClientId}
-            options={clients.map((c) => ({ value: c.id, label: c.fullName }))}
-          />
-        ) : (
-          <div className="grid sm:grid-cols-2 gap-3">
-            <Field label="Nombre completo" name="fullName" error={state.fieldErrors?.fullName} />
-            <Field label="Teléfono" name="phone" placeholder="+1809..." error={state.fieldErrors?.phone} />
-            <Field label="Email (opcional)" name="email" type="email" />
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {clientMode === "existing" ? (
+            <motion.div
+              key="existing"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+            >
+              <label className="flex flex-col gap-1.5">
+                <span className="text-xs font-bold uppercase tracking-wide text-zinc-700">
+                  Cliente
+                </span>
+                <select
+                  name="clientId"
+                  value={clientId}
+                  onChange={(e) => setClientId(e.target.value)}
+                  className="rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none transition focus:border-brand-red-500 focus:ring-4 focus:ring-brand-red-100"
+                >
+                  {clients.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.fullName}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="new"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="grid sm:grid-cols-2 gap-3"
+            >
+              <FormField
+                label="Nombre completo"
+                name="fullName"
+                required
+                error={state.fieldErrors?.fullName}
+                className="sm:col-span-2"
+              />
+              <FormField
+                label="Teléfono"
+                name="phone"
+                required
+                placeholder="+1809..."
+                error={state.fieldErrors?.phone}
+              />
+              <FormField label="Email (opcional)" name="email" type="email" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Section>
 
-      <Section title="Vehículo">
-        <Tabs
+      <Section step={2} title="Vehículo">
+        <Toggle
           value={vehicleMode}
           onChange={setVehicleMode}
           options={[
@@ -78,99 +124,147 @@ export function NewTicketForm({
           ]}
           name="vehicleMode"
         />
-        {vehicleMode === "existing" ? (
-          <Select
-            label="Vehículo del cliente"
-            name="vehicleId"
-            options={
-              filteredVehicles.length > 0
-                ? filteredVehicles.map((v) => ({ value: v.id, label: v.label }))
-                : [{ value: "", label: "El cliente no tiene vehículos — registra uno nuevo" }]
-            }
-          />
-        ) : (
-          <div className="grid sm:grid-cols-2 gap-3">
-            <Field label="Marca" name="brand" />
-            <Field label="Modelo" name="model" />
-            <Field label="Año" name="year" type="number" />
-            <Field label="Placa" name="plate" />
-            <Field label="Color" name="color" />
-            <Field label="VIN (opcional)" name="vin" />
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {vehicleMode === "existing" ? (
+            <motion.div
+              key="existing"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+            >
+              <FormSelect
+                label="Vehículo del cliente"
+                name="vehicleId"
+                options={
+                  filteredVehicles.length > 0
+                    ? filteredVehicles.map((v) => ({ value: v.id, label: v.label }))
+                    : [{ value: "", label: "El cliente no tiene vehículos — registra uno nuevo" }]
+                }
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="new"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="grid sm:grid-cols-2 gap-3"
+            >
+              <FormField label="Marca" name="brand" required />
+              <FormField label="Modelo" name="model" required />
+              <FormField label="Año" name="year" type="number" required />
+              <FormField label="Placa" name="plate" required />
+              <FormField label="Color" name="color" required />
+              <FormField label="VIN (opcional)" name="vin" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Section>
 
-      <Section title="Servicio">
+      <Section step={3} title="Servicio">
         <div className="grid sm:grid-cols-2 gap-3">
-          <Select
-            label="Tipo de servicio"
+          <FormSelect
+            label="Tipo"
             name="serviceType"
+            defaultValue="PPF"
             options={[
               { value: "PPF", label: "PPF" },
               { value: "CeramicCoating", label: "Ceramic Coating" },
               { value: "Both", label: "PPF + Ceramic Coating" },
             ]}
           />
-          <Field label="ETA de entrega" name="etaAt" type="datetime-local" required />
+          <FormField
+            label="ETA de entrega"
+            name="etaAt"
+            type="datetime-local"
+            required
+            error={state.fieldErrors?.etaAt}
+          />
         </div>
         <label className="flex items-center gap-2 mt-3 text-sm text-zinc-700">
-          <input type="checkbox" name="isOfferVehicle" className="size-4 accent-brand-red-600" />
-          Vehículo de la oferta (incluye envío a JS Autotuning para laminado y alfombras)
+          <input
+            type="checkbox"
+            name="isOfferVehicle"
+            className="size-4 accent-brand-red-600"
+          />
+          <span>
+            <span className="font-semibold">Vehículo de la oferta</span>{" "}
+            <span className="text-zinc-500">
+              (incluye paso por JS Autotuning para laminado y alfombras bandeja).
+            </span>
+          </span>
         </label>
       </Section>
 
-      <Section title="Asignaciones (opcional)">
+      <Section step={4} title="Asignaciones (opcional)">
         <div className="grid sm:grid-cols-3 gap-3">
-          <Select
+          <FormSelect
             label="Técnico lavador"
             name="assignedTecnicoId"
-            options={[{ value: "", label: "Sin asignar" }, ...tecnicos.map((u) => ({ value: u.id, label: u.name }))]}
+            options={[
+              { value: "", label: "Sin asignar" },
+              ...tecnicos.map((u) => ({ value: u.id, label: u.name })),
+            ]}
           />
-          <Select
-            label="Especialista de aplicación"
+          <FormSelect
+            label="Especialista"
             name="assignedEspecialistaId"
             options={[
               { value: "", label: "Sin asignar" },
               ...especialistas.map((u) => ({ value: u.id, label: u.name })),
             ]}
           />
-          <Select
+          <FormSelect
             label="Control de calidad"
             name="assignedQcId"
-            options={[{ value: "", label: "Sin asignar" }, ...qcs.map((u) => ({ value: u.id, label: u.name }))]}
+            options={[
+              { value: "", label: "Sin asignar" },
+              ...qcs.map((u) => ({ value: u.id, label: u.name })),
+            ]}
           />
         </div>
       </Section>
 
       {state.error ? (
-        <div className="rounded-xl bg-red-50 text-red-700 text-sm px-3 py-2 border border-red-200">
+        <div className="rounded-xl bg-brand-red-50 text-brand-red-700 text-sm px-3 py-2 border border-brand-red-100">
           {state.error}
         </div>
       ) : null}
 
-      <div className="flex gap-2 justify-end pt-2 border-t border-zinc-100">
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-xl bg-zinc-900 text-white text-sm font-medium px-5 py-2.5 hover:bg-zinc-800 transition disabled:opacity-50"
-        >
+      <div className="flex items-center justify-end gap-2 pt-4 border-t border-zinc-100">
+        <PrimaryButton type="submit" disabled={pending}>
           {pending ? "Creando…" : "Crear ticket"}
-        </button>
+        </PrimaryButton>
       </div>
     </form>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  step,
+  title,
+  children,
+}: {
+  step: number;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <fieldset className="space-y-3">
-      <legend className="text-sm font-semibold text-zinc-900">{title}</legend>
-      {children}
+      <legend className="flex items-center gap-2.5">
+        <span className="size-7 rounded-full bg-brand-red-600 text-white flex items-center justify-center text-xs font-black">
+          {step}
+        </span>
+        <span className="text-sm font-black uppercase tracking-tight text-zinc-900">{title}</span>
+      </legend>
+      <div className="pl-9">{children}</div>
     </fieldset>
   );
 }
 
-function Tabs<T extends string>({
+function Toggle<T extends string>({
   value,
   onChange,
   options,
@@ -188,78 +282,17 @@ function Tabs<T extends string>({
           key={opt.value}
           type="button"
           onClick={() => onChange(opt.value)}
-          className={
+          className={clsx(
+            "px-4 py-1.5 text-xs font-bold uppercase tracking-wide rounded-lg transition",
             value === opt.value
-              ? "px-4 py-1.5 text-sm font-medium rounded-lg bg-white shadow-sm text-zinc-900"
-              : "px-4 py-1.5 text-sm font-medium rounded-lg text-zinc-500 hover:text-zinc-700"
-          }
+              ? "bg-brand-red-600 text-white shadow-sm"
+              : "text-zinc-600 hover:text-zinc-900",
+          )}
         >
           {opt.label}
         </button>
       ))}
       <input type="hidden" name={name} value={value} />
     </div>
-  );
-}
-
-function Field({
-  label,
-  name,
-  type = "text",
-  required = false,
-  placeholder,
-  error,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  required?: boolean;
-  placeholder?: string;
-  error?: string;
-}) {
-  return (
-    <label className="flex flex-col gap-1 text-sm">
-      <span className="text-zinc-700">{label}</span>
-      <input
-        type={type}
-        name={name}
-        required={required}
-        placeholder={placeholder}
-        className="rounded-xl border border-zinc-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-red-100 focus:border-brand-red-500"
-      />
-      {error ? <span className="text-xs text-red-600">{error}</span> : null}
-    </label>
-  );
-}
-
-function Select({
-  label,
-  name,
-  value,
-  onChange,
-  options,
-}: {
-  label: string;
-  name: string;
-  value?: string;
-  onChange?: (v: string) => void;
-  options: Array<{ value: string; label: string }>;
-}) {
-  return (
-    <label className="flex flex-col gap-1 text-sm">
-      <span className="text-zinc-700">{label}</span>
-      <select
-        name={name}
-        value={value}
-        onChange={onChange ? (e) => onChange(e.target.value) : undefined}
-        className="rounded-xl border border-zinc-200 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-brand-red-100 focus:border-brand-red-500"
-      >
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
-    </label>
   );
 }

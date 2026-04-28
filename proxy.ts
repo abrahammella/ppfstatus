@@ -9,7 +9,14 @@ const ROLE_HOME: Record<Role, string> = {
   qc: "/qc",
 };
 
-const ADMIN_PREFIXES = ["/dashboard", "/tablero", "/tickets", "/clientes", "/empleados"];
+const ADMIN_PREFIXES = [
+  "/dashboard",
+  "/tablero",
+  "/tickets",
+  "/clientes",
+  "/servicios",
+  "/empleados",
+];
 const ROLE_PREFIXES: Record<Role, string[]> = {
   admin: ADMIN_PREFIXES,
   tecnico: ["/tecnico", "/ticket"],
