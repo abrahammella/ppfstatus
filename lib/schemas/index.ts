@@ -69,12 +69,47 @@ export type TicketStep = z.infer<typeof TicketStepSchema>;
 export const ServiceTypeSchema = z.enum(["PPF", "CeramicCoating", "Both"]);
 export type ServiceType = z.infer<typeof ServiceTypeSchema>;
 
+export const CatalogCategorySchema = z.enum([
+  "paquete_ppf",
+  "ceramic_coating",
+  "lavado",
+  "otro",
+]);
+export type CatalogCategory = z.infer<typeof CatalogCategorySchema>;
+
+export const CatalogItemSchema = z.object({
+  id,
+  name: z.string().min(2),
+  category: CatalogCategorySchema,
+  active: z.boolean().default(true),
+  priceUsd: z.number().nonnegative().optional(),
+  notes: z.string().optional(),
+});
+export type CatalogItem = z.infer<typeof CatalogItemSchema>;
+
+export const CatalogItemInputSchema = CatalogItemSchema.omit({ id: true });
+
+export const CATEGORY_LABELS: Record<CatalogCategory, string> = {
+  paquete_ppf: "Paquete PPF",
+  ceramic_coating: "Ceramic Coating",
+  lavado: "Lavados Profesionales",
+  otro: "Otros Servicios",
+};
+
+export const CATEGORY_ORDER: CatalogCategory[] = [
+  "paquete_ppf",
+  "ceramic_coating",
+  "lavado",
+  "otro",
+];
+
 export const TicketSchema = z.object({
   id,
   vehicleId: id,
   clientId: id,
   isOfferVehicle: z.boolean(),
   serviceType: ServiceTypeSchema,
+  catalogItemIds: z.array(id).default([]),
   status: StageSchema,
   steps: z.array(TicketStepSchema),
   assignedTecnicoId: id.optional(),
@@ -93,6 +128,7 @@ export const ServiceSchema = z.object({
   clientId: id,
   ticketId: id,
   type: ServiceTypeSchema,
+  catalogItemIds: z.array(id).default([]),
   completedAt: isoDate,
   notes: z.string().optional(),
 });
@@ -110,6 +146,7 @@ export const NewTicketInputSchema = z.object({
   clientId: id,
   vehicleId: id,
   serviceType: ServiceTypeSchema,
+  catalogItemIds: z.array(id).default([]),
   isOfferVehicle: z.boolean(),
   etaAt: isoDate,
   assignedTecnicoId: id.optional(),

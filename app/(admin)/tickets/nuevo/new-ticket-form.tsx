@@ -8,7 +8,12 @@ import {
   PrimaryButton,
 } from "@/components/ui/form-fields";
 import { createTicketAction, type NewTicketState } from "./actions";
-import type { Client } from "@/lib/schemas";
+import {
+  CATEGORY_LABELS,
+  CATEGORY_ORDER,
+  type CatalogItem,
+  type Client,
+} from "@/lib/schemas";
 import clsx from "clsx";
 
 interface VehicleOpt {
@@ -29,22 +34,60 @@ export function NewTicketForm({
   tecnicos,
   especialistas,
   qcs,
+  catalog,
+  initialClientId,
 }: {
   clients: Client[];
   vehicles: VehicleOpt[];
   tecnicos: UserOpt[];
   especialistas: UserOpt[];
   qcs: UserOpt[];
+  catalog: CatalogItem[];
+  initialClientId?: string;
 }) {
   const [state, action, pending] = useActionState(createTicketAction, initial);
   const [clientMode, setClientMode] = useState<"existing" | "new">("existing");
   const [vehicleMode, setVehicleMode] = useState<"existing" | "new">("existing");
-  const [clientId, setClientId] = useState<string>(clients[0]?.id ?? "");
+  const [clientId, setClientId] = useState<string>(initialClientId ?? clients[0]?.id ?? "");
+  const [selectedItemIds, setSelectedItemIds] = useState<Set<string>>(new Set());
 
   const filteredVehicles = useMemo(
     () => vehicles.filter((v) => v.clientId === clientId),
     [vehicles, clientId],
   );
+
+  const catalogByCategory = useMemo(() => {
+    const map = new Map<string, CatalogItem[]>();
+    for (const cat of CATEGORY_ORDER) {
+      map.set(cat, catalog.filter((i) => i.category === cat));
+    }
+    return map;
+  }, [catalog]);
+
+  // Derive serviceType from selected items: PPF if any paquete_ppf,
+  // CeramicCoating if any ceramic_coating, Both if both, else PPF as fallback.
+  const derivedServiceType = useMemo(() => {
+    let hasPpf = false;
+    let hasCc = false;
+    for (const id of selectedItemIds) {
+      const item = catalog.find((c) => c.id === id);
+      if (!item) continue;
+      if (item.category === "paquete_ppf") hasPpf = true;
+      if (item.category === "ceramic_coating") hasCc = true;
+    }
+    if (hasPpf && hasCc) return "Both";
+    if (hasCc) return "CeramicCoating";
+    return "PPF";
+  }, [selectedItemIds, catalog]);
+
+  function toggleItem(id: string) {
+    setSelectedItemIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
 
   return (
     <form action={action} className="space-y-7">
@@ -163,18 +206,76 @@ export function NewTicketForm({
         </AnimatePresence>
       </Section>
 
-      <Section step={3} title="Servicio">
-        <div className="grid sm:grid-cols-2 gap-3">
-          <FormSelect
-            label="Tipo"
-            name="serviceType"
-            defaultValue="PPF"
-            options={[
-              { value: "PPF", label: "PPF" },
-              { value: "CeramicCoating", label: "Ceramic Coating" },
-              { value: "Both", label: "PPF + Ceramic Coating" },
-            ]}
-          />
+      <Section step={3} title="Servicios">
+        <input type="hidden" name="serviceType" value={derivedServiceType} />
+        {[...selectedItemIds].map((id) => (
+          <input key={id} type="hidden" name="catalogItemIds" value={id} />
+        ))}
+
+        <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/50 p-3 sm:p-4 space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-xs text-zinc-600">
+              Marca todos los servicios que se aplicarán a este vehículo.
+            </p>
+            <span
+              className={clsx(
+                "inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide",
+                selectedItemIds.size > 0
+                  ? "bg-brand-red-50 text-brand-red-700 border-brand-red-100"
+                  : "bg-zinc-100 text-zinc-500 border-zinc-200",
+              )}
+            >
+              {selectedItemIds.size} seleccionado{selectedItemIds.size === 1 ? "" : "s"}
+            </span>
+          </div>
+
+          {CATEGORY_ORDER.map((cat) => {
+            const items = catalogByCategory.get(cat) ?? [];
+            if (items.length === 0) return null;
+            return (
+              <div key={cat}>
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500 mb-2">
+                  {CATEGORY_LABELS[cat]}
+                </div>
+                <div className="grid sm:grid-cols-2 gap-1.5">
+                  {items.map((item) => {
+                    const checked = selectedItemIds.has(item.id);
+                    return (
+                      <label
+                        key={item.id}
+                        className={clsx(
+                          "flex items-start gap-2.5 rounded-xl border px-3 py-2 cursor-pointer transition",
+                          checked
+                            ? "border-brand-red-500 bg-white ring-2 ring-brand-red-100"
+                            : "border-zinc-200 bg-white hover:border-zinc-300",
+                        )}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleItem(item.id)}
+                          className="size-4 mt-0.5 accent-brand-red-600 shrink-0"
+                        />
+                        <span className="flex-1 min-w-0">
+                          <span className="text-sm text-zinc-900 font-medium leading-tight block">
+                            {item.name}
+                          </span>
+                          {typeof item.priceUsd === "number" ? (
+                            <span className="text-[11px] text-zinc-500 tabular-nums">
+                              US${item.priceUsd}
+                            </span>
+                          ) : null}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-3 mt-3">
           <FormField
             label="ETA de entrega"
             name="etaAt"

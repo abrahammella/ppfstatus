@@ -73,6 +73,7 @@ export async function createServiceAction(
     vehicleId: parsed.data.vehicleId,
     ticketId: `manual_${Date.now()}`,
     type: parsed.data.type,
+    catalogItemIds: [],
     completedAt: parsed.data.completedAt,
     notes: parsed.data.notes,
   });

@@ -1,5 +1,6 @@
 import "server-only";
 import type { Repos } from "./interfaces";
+import { jsonCatalogRepo } from "./json/catalog.repo";
 import { jsonClientRepo } from "./json/client.repo";
 import { jsonServiceRepo } from "./json/service.repo";
 import { jsonTicketRepo } from "./json/ticket.repo";
@@ -17,6 +18,7 @@ function build(): Repos {
         vehicles: jsonVehicleRepo,
         tickets: jsonTicketRepo,
         services: jsonServiceRepo,
+        catalog: jsonCatalogRepo,
       };
     case "supabase":
       throw new Error("Supabase driver not implemented yet (Fase 2).");

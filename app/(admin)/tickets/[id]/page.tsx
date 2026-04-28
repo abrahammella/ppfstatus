@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getEnrichedTicket } from "@/lib/queries";
+import { repos } from "@/lib/repositories";
 import { TicketChecklist } from "@/components/ticket/ticket-checklist";
 import { StageBadge } from "@/components/ticket/stage-badge";
 import { ProgressPill } from "@/components/ticket/progress-pill";
 import { progressPercent, ROLE_LABELS } from "@/lib/flow/ppf-stages";
+import { CATEGORY_LABELS, CATEGORY_ORDER } from "@/lib/schemas";
 import { completeStepAction } from "@/app/(employee)/ticket/[id]/actions";
 import { SectionCard } from "@/components/dashboard/section-card";
 
@@ -12,13 +14,24 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminTicketPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const ticket = await getEnrichedTicket(id);
+  const [ticket, catalog] = await Promise.all([
+    getEnrichedTicket(id),
+    repos.catalog.list(),
+  ]);
   if (!ticket) notFound();
 
   const completed = new Set(ticket.steps.filter((s) => s.completed).map((s) => s.key));
   const pct = progressPercent(ticket.isOfferVehicle, completed);
   const completedCount = completed.size;
   const totalSteps = ticket.steps.length;
+
+  const selectedItems = (ticket.catalogItemIds ?? [])
+    .map((id) => catalog.find((c) => c.id === id))
+    .filter((i): i is NonNullable<typeof i> => Boolean(i));
+  const itemsByCategory = CATEGORY_ORDER.map((cat) => ({
+    category: cat,
+    items: selectedItems.filter((i) => i.category === cat),
+  })).filter((g) => g.items.length > 0);
 
   return (
     <div className="flex flex-col gap-6">
@@ -84,7 +97,7 @@ export default async function AdminTicketPage({ params }: { params: Promise<{ id
           </Section>
 
           <Section title="Servicio">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="inline-flex items-center rounded-full bg-zinc-900 text-white px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide">
                 {ticket.serviceType === "Both" ? "PPF + CC" : ticket.serviceType}
               </span>
@@ -99,6 +112,37 @@ export default async function AdminTicketPage({ params }: { params: Promise<{ id
                 Incluye paso a JS Autotuning (laminado + alfombras bandeja).
               </div>
             ) : null}
+
+            {itemsByCategory.length > 0 ? (
+              <div className="mt-3 space-y-2">
+                {itemsByCategory.map((g) => (
+                  <div key={g.category}>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500 mb-1">
+                      {CATEGORY_LABELS[g.category]}
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {g.items.map((item) => (
+                        <span
+                          key={item.id}
+                          className="inline-flex items-center rounded-full bg-brand-red-50 text-brand-red-700 border border-brand-red-100 px-2 py-0.5 text-[11px] font-semibold"
+                        >
+                          {item.name}
+                          {typeof item.priceUsd === "number" ? (
+                            <span className="ml-1 text-zinc-500 tabular-nums">
+                              · US${item.priceUsd}
+                            </span>
+                          ) : null}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-[11px] text-zinc-400 italic mt-2">
+                Sin servicios del catálogo seleccionados.
+              </div>
+            )}
           </Section>
 
           <Section title="Asignaciones">

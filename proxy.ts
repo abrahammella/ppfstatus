@@ -15,6 +15,7 @@ const ADMIN_PREFIXES = [
   "/tickets",
   "/clientes",
   "/servicios",
+  "/catalogo",
   "/empleados",
 ];
 const ROLE_PREFIXES: Record<Role, string[]> = {

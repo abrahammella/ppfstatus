@@ -46,12 +46,19 @@ const ICON_LIST = (
   </svg>
 );
 
+const ICON_CATALOG = (
+  <svg viewBox="0 0 20 20" fill="none" className="size-4" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4 4h12v12H4zM7 8h6M7 12h4" />
+  </svg>
+);
+
 const ADMIN_NAV: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: ICON_DASHBOARD },
   { href: "/tablero", label: "Tablero", icon: ICON_BOARD },
   { href: "/tickets/nuevo", label: "Nuevo ticket", icon: ICON_PLUS },
   { href: "/clientes", label: "Clientes", icon: ICON_USERS },
   { href: "/servicios", label: "Servicios", icon: ICON_LIST },
+  { href: "/catalogo", label: "Catálogo", icon: ICON_CATALOG },
   { href: "/empleados", label: "Empleados", icon: ICON_BADGE },
 ];
 

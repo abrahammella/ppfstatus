@@ -75,10 +75,16 @@ export async function createTicketAction(
   }
   if (!vehicleId) return { error: "Selecciona o crea un vehículo." };
 
+  const catalogItemIds = formData
+    .getAll("catalogItemIds")
+    .map((v) => String(v).trim())
+    .filter(Boolean);
+
   const tinput = NewTicketInputSchema.safeParse({
     clientId,
     vehicleId,
     serviceType: f(formData, "serviceType") as "PPF" | "CeramicCoating" | "Both",
+    catalogItemIds,
     isOfferVehicle: f(formData, "isOfferVehicle") === "on",
     etaAt: new Date(f(formData, "etaAt")).toISOString(),
     assignedTecnicoId: f(formData, "assignedTecnicoId") || undefined,
@@ -103,6 +109,7 @@ export async function createTicketAction(
     vehicleId: tinput.data.vehicleId,
     isOfferVehicle: tinput.data.isOfferVehicle,
     serviceType: tinput.data.serviceType,
+    catalogItemIds: tinput.data.catalogItemIds,
     status: "recepcion",
     steps,
     assignedTecnicoId: tinput.data.assignedTecnicoId,

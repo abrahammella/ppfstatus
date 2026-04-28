@@ -5,16 +5,26 @@ import { SectionCard } from "@/components/dashboard/section-card";
 
 export const dynamic = "force-dynamic";
 
-export default async function NewTicketPage() {
-  const [clients, vehicles, users] = await Promise.all([
+export default async function NewTicketPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ clientId?: string }>;
+}) {
+  const { clientId: prefillClientId } = await searchParams;
+  const [clients, vehicles, users, catalog] = await Promise.all([
     repos.clients.list(),
     repos.vehicles.list(),
     repos.users.list(),
+    repos.catalog.list(),
   ]);
 
   const tecnicos = users.filter((u) => u.role === "tecnico" && u.active);
   const especialistas = users.filter((u) => u.role === "especialista" && u.active);
   const qcs = users.filter((u) => u.role === "qc" && u.active);
+  const activeCatalog = catalog.filter((i) => i.active);
+  const initialClientId = prefillClientId && clients.some((c) => c.id === prefillClientId)
+    ? prefillClientId
+    : undefined;
 
   return (
     <div className="flex flex-col gap-6 max-w-3xl">
@@ -48,6 +58,8 @@ export default async function NewTicketPage() {
           tecnicos={tecnicos.map((u) => ({ id: u.id, name: u.name }))}
           especialistas={especialistas.map((u) => ({ id: u.id, name: u.name }))}
           qcs={qcs.map((u) => ({ id: u.id, name: u.name }))}
+          catalog={activeCatalog}
+          initialClientId={initialClientId}
         />
       </SectionCard>
     </div>

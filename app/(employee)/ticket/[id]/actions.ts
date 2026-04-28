@@ -17,6 +17,9 @@ import { newId } from "@/lib/repositories/json/storage";
 
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
 
+const USE_INLINE_PHOTOS =
+  process.env.STORAGE_DRIVER === "memory" || process.env.VERCEL === "1";
+
 function extFromMime(mime: string): string {
   if (mime === "image/png") return "png";
   if (mime === "image/webp") return "webp";
@@ -27,11 +30,19 @@ function extFromMime(mime: string): string {
 async function savePhoto(ticketId: string, stepKey: string, file: File): Promise<string> {
   if (file.size > MAX_PHOTO_BYTES) throw new Error("Foto demasiado grande (máx 5MB).");
   if (!file.type.startsWith("image/")) throw new Error("Archivo debe ser una imagen.");
+  const buf = Buffer.from(await file.arrayBuffer());
+
+  // On Vercel / read-only filesystems, persist the photo inline as a data URL.
+  // Trade-off: the photo lives in the in-memory ticket record (no filesystem),
+  // which is fine for a POC and survives until the function instance recycles.
+  if (USE_INLINE_PHOTOS) {
+    return `data:${file.type};base64,${buf.toString("base64")}`;
+  }
+
   const dir = path.join(process.cwd(), "public", "uploads", ticketId);
   await fs.mkdir(dir, { recursive: true });
   const ext = extFromMime(file.type);
   const filename = `${stepKey}-${Date.now()}.${ext}`;
-  const buf = Buffer.from(await file.arrayBuffer());
   await fs.writeFile(path.join(dir, filename), buf);
   return `/uploads/${ticketId}/${filename}`;
 }
@@ -98,6 +109,7 @@ export async function completeStepAction(formData: FormData): Promise<CompleteRe
         clientId: ticket.clientId,
         ticketId: ticket.id,
         type: ticket.serviceType,
+        catalogItemIds: ticket.catalogItemIds ?? [],
         completedAt,
       });
       await repos.clients.update(ticket.clientId, { lastVisitAt: completedAt }).catch(() => null);

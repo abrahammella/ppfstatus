@@ -156,6 +156,7 @@
       "clientId": "c_001",
       "isOfferVehicle": true,
       "serviceType": "Both",
+      "catalogItemIds": ["ci_skygloss", "ci_tintado", "cc_int_ext", "cc_cristales", "lv_full_detailing"],
       "status": "lavado",
       "steps": [
         {
@@ -1014,5 +1015,34 @@
       "type": "PPF",
       "completedAt": "2026-04-27T17:00:00.000Z"
     }
+  ],
+  "catalog": [
+    { "id": "ci_skygloss", "name": "Skygloss", "category": "paquete_ppf", "active": true },
+    { "id": "ci_3m", "name": "3M", "category": "paquete_ppf", "active": true },
+    { "id": "ci_unix", "name": "Unix", "category": "paquete_ppf", "active": true },
+    { "id": "ci_tintado", "name": "Tintado", "category": "paquete_ppf", "active": true },
+    { "id": "ci_alfombra_bandeja", "name": "Alfombra tipo bandeja", "category": "paquete_ppf", "active": true },
+    { "id": "ci_paquete_900", "name": "Paquete US$900", "category": "paquete_ppf", "active": true, "priceUsd": 900 },
+    { "id": "ci_full_front_ppf", "name": "Paquete Full Front PPF", "category": "paquete_ppf", "active": true },
+    { "id": "ci_skygloss_fusion", "name": "Paquete de Skygloss Fusion", "category": "paquete_ppf", "active": true },
+
+    { "id": "cc_booster", "name": "Booster", "category": "ceramic_coating", "active": true },
+    { "id": "cc_interior", "name": "Cerámica Interior", "category": "ceramic_coating", "active": true },
+    { "id": "cc_exterior", "name": "Cerámica Exterior", "category": "ceramic_coating", "active": true },
+    { "id": "cc_int_ext", "name": "Cerámica Interior y Exterior", "category": "ceramic_coating", "active": true },
+    { "id": "cc_cristales", "name": "Cerámica de Cristales", "category": "ceramic_coating", "active": true },
+    { "id": "cc_aro", "name": "Cerámica de Aro", "category": "ceramic_coating", "active": true },
+
+    { "id": "lv_basico_ppf", "name": "Lavado Básico + Correcciones de PPF", "category": "lavado", "active": true },
+    { "id": "lv_detallado", "name": "Lavado Detallado", "category": "lavado", "active": true },
+    { "id": "lv_full_detailing", "name": "Lavado Full Detailing", "category": "lavado", "active": true },
+    { "id": "lv_detallado_mant", "name": "Lavado Detallado + Mantenimiento de Pintura", "category": "lavado", "active": true },
+    { "id": "lv_full_mant", "name": "Lavado Full Detailing + Mantenimiento de Pintura", "category": "lavado", "active": true },
+
+    { "id": "ot_correccion_pintura", "name": "Corrección de Pintura", "category": "otro", "active": true },
+    { "id": "ot_retiro_pieza_ppf", "name": "Retiro de Pieza PPF", "category": "otro", "active": true },
+    { "id": "ot_retiro_exoshield", "name": "Retiro de Exoshield (Lámina delantera)", "category": "otro", "active": true },
+    { "id": "ot_limpieza_gotas", "name": "Limpieza de gotas de agua (Manchas)", "category": "otro", "active": true },
+    { "id": "ot_pieza_ppf", "name": "Pieza en PPF", "category": "otro", "active": true }
   ]
 }

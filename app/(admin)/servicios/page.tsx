@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { repos } from "@/lib/repositories";
 import { ServiceTypeSchema } from "@/lib/schemas";
 import {
@@ -71,9 +72,12 @@ export default async function ServiciosPage() {
               return (
                 <tr key={s.id} className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/60 transition">
                   <td className="px-5 py-3">
-                    <div className="font-semibold text-zinc-900">
+                    <Link
+                      href={`/servicios/${s.id}`}
+                      className="font-semibold text-zinc-900 hover:text-brand-red-700"
+                    >
                       {v ? `${v.brand} ${v.model} ${v.year}` : "—"}
-                    </div>
+                    </Link>
                     {v ? (
                       <div className="text-xs text-zinc-500 font-mono">{v.plate}</div>
                     ) : null}
@@ -103,7 +107,15 @@ export default async function ServiciosPage() {
                     )}
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <ServiceRowActions service={{ id: s.id, clientId: s.clientId, notes: s.notes }} />
+                    <div className="flex items-center justify-end gap-3">
+                      <Link
+                        href={`/servicios/${s.id}`}
+                        className="text-xs font-bold uppercase tracking-wide text-brand-red-700 hover:text-brand-red-900"
+                      >
+                        Ver detalle
+                      </Link>
+                      <ServiceRowActions service={{ id: s.id, clientId: s.clientId, notes: s.notes }} />
+                    </div>
                   </td>
                 </tr>
               );

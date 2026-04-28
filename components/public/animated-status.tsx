@@ -29,6 +29,12 @@ const stepCircle: Variants = {
   show: { scale: 1, opacity: 1, rotate: 0, transition: { type: "spring", stiffness: 320, damping: 18 } },
 };
 
+export interface ServiceGroup {
+  category: string;
+  label: string;
+  names: string[];
+}
+
 export interface AnimatedStatusProps {
   clientName: string;
   vehicleLine: string | null;
@@ -38,6 +44,7 @@ export interface AnimatedStatusProps {
   completedAtIso: string | null;
   isCompleted: boolean;
   lastPhotoUrl: string | null;
+  serviceGroups?: ServiceGroup[];
 }
 
 export function AnimatedStatus({
@@ -49,6 +56,7 @@ export function AnimatedStatus({
   completedAtIso,
   isCompleted,
   lastPhotoUrl,
+  serviceGroups = [],
 }: AnimatedStatusProps) {
   const currentIdx = STAGES.indexOf(status);
   const dateIso = isCompleted ? completedAtIso ?? etaIso : etaIso;
@@ -238,6 +246,39 @@ export function AnimatedStatus({
               );
             })}
           </motion.ol>
+
+          {/* Services applied */}
+          {serviceGroups.length > 0 ? (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.95, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-7 rounded-2xl border border-zinc-200 bg-zinc-50/60 p-4"
+            >
+              <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-500 mb-3">
+                Servicios aplicados
+              </div>
+              <div className="space-y-3">
+                {serviceGroups.map((g) => (
+                  <div key={g.category}>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-brand-red-600 mb-1.5">
+                      {g.label}
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {g.names.map((name) => (
+                        <span
+                          key={name}
+                          className="inline-flex items-center rounded-full bg-white border border-zinc-200 text-zinc-800 px-2.5 py-0.5 text-[11px] font-semibold"
+                        >
+                          {name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ) : null}
 
           {/* Photo with reveal */}
           {lastPhotoUrl ? (

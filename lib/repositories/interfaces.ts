@@ -1,4 +1,4 @@
-import type { Client, Service, Ticket, User, Vehicle } from "@/lib/schemas";
+import type { CatalogItem, Client, Service, Ticket, User, Vehicle } from "@/lib/schemas";
 
 export interface IUserRepo {
   list(): Promise<User[]>;
@@ -42,10 +42,19 @@ export interface IServiceRepo {
   create(s: Service): Promise<Service>;
 }
 
+export interface ICatalogRepo {
+  list(): Promise<CatalogItem[]>;
+  findById(id: string): Promise<CatalogItem | null>;
+  create(item: CatalogItem): Promise<CatalogItem>;
+  update(id: string, patch: Partial<CatalogItem>): Promise<CatalogItem>;
+  remove(id: string): Promise<void>;
+}
+
 export interface Repos {
   users: IUserRepo;
   clients: IClientRepo;
   vehicles: IVehicleRepo;
   tickets: ITicketRepo;
   services: IServiceRepo;
+  catalog: ICatalogRepo;
 }
