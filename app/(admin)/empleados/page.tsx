@@ -5,6 +5,7 @@ import {
   EmployeeRowActions,
   NewEmployeeButton,
 } from "./employee-row-actions";
+import { SearchTable } from "@/components/ui/search-table";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +33,10 @@ export default async function EmpleadosPage() {
         <NewEmployeeButton />
       </div>
 
+      <SearchTable
+        placeholder="Buscar por nombre, email o rol…"
+        totalCount={users.length}
+      >
       <div className="rounded-3xl bg-white border border-zinc-200/80 shadow-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 text-[11px] font-bold uppercase tracking-wide">
@@ -45,7 +50,11 @@ export default async function EmpleadosPage() {
           </thead>
           <tbody>
             {sorted.map((u) => (
-              <tr key={u.id} className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/60 transition">
+              <tr
+                key={u.id}
+                data-search={`${u.name} ${u.email} ${ROLE_LABELS[u.role]}`.toLowerCase()}
+                className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/60 transition"
+              >
                 <td className="px-5 py-3">
                   <div className="flex items-center gap-3">
                     <span className="size-9 rounded-full bg-gradient-to-br from-brand-red-500 to-brand-red-700 text-white text-xs font-black flex items-center justify-center ring-1 ring-white">
@@ -90,6 +99,7 @@ export default async function EmpleadosPage() {
           </tbody>
         </table>
       </div>
+      </SearchTable>
     </div>
   );
 }

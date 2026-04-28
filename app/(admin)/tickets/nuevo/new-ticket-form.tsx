@@ -177,8 +177,10 @@ export function NewTicketForm({
               transition={{ duration: 0.2 }}
             >
               <FormSelect
+                key={`veh-${clientId}`}
                 label="Vehículo del cliente"
                 name="vehicleId"
+                defaultValue={filteredVehicles[0]?.id}
                 options={
                   filteredVehicles.length > 0
                     ? filteredVehicles.map((v) => ({ value: v.id, label: v.label }))

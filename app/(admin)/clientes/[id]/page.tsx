@@ -5,6 +5,7 @@ import {
   CATEGORY_LABELS,
   CATEGORY_ORDER,
   ServiceTypeSchema,
+  TIER_LABELS,
   type CatalogItem,
   type Service,
   type Ticket,
@@ -151,8 +152,21 @@ export default async function ClientDetailPage({
             <p className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase text-brand-red-600">
               <span className="h-px w-6 bg-brand-red-600" /> Ficha de cliente
             </p>
-            <h1 className="mt-2 text-3xl lg:text-4xl font-black uppercase tracking-tight text-zinc-900">
+            <h1 className="mt-2 text-3xl lg:text-4xl font-black uppercase tracking-tight text-zinc-900 flex items-center gap-3 flex-wrap">
               {client.fullName}
+              {client.tier ? (
+                <span
+                  className={
+                    client.tier === "premier"
+                      ? "inline-flex items-center rounded-full bg-brand-yellow-300 text-zinc-900 border border-brand-yellow-400 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide"
+                      : client.tier === "deluxe"
+                        ? "inline-flex items-center rounded-full bg-zinc-900 text-white px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide"
+                        : "inline-flex items-center rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide"
+                  }
+                >
+                  {TIER_LABELS[client.tier]}
+                </span>
+              ) : null}
             </h1>
             <p className="text-sm text-zinc-500 mt-1">
               cliente desde {fmtDate(client.createdAt)} · {relativeFromNow(client.createdAt)}
@@ -172,6 +186,7 @@ export default async function ClientDetailPage({
                 phone: client.phone,
                 email: client.email,
                 notes: client.notes,
+                tier: client.tier,
               }}
             />
           </div>

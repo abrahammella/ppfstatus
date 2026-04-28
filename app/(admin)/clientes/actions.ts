@@ -24,11 +24,13 @@ export async function createClientAction(
   formData: FormData,
 ): Promise<ActionResult> {
   await requireRole("admin");
+  const tierRaw = String(formData.get("tier") ?? "").trim();
   const parsed = ClientInputSchema.safeParse({
     fullName: String(formData.get("fullName") ?? "").trim(),
     phone: String(formData.get("phone") ?? "").trim(),
     email: (String(formData.get("email") ?? "").trim() || undefined) as string | undefined,
     notes: (String(formData.get("notes") ?? "").trim() || undefined) as string | undefined,
+    tier: tierRaw === "" ? undefined : tierRaw,
   });
   if (!parsed.success) {
     return { ok: false, fieldErrors: flat(parsed.error.flatten().fieldErrors) };
@@ -50,11 +52,13 @@ export async function updateClientAction(
   const id = String(formData.get("id") ?? "");
   if (!id) return { ok: false, error: "ID faltante." };
 
+  const tierRaw = String(formData.get("tier") ?? "").trim();
   const parsed = ClientInputSchema.safeParse({
     fullName: String(formData.get("fullName") ?? "").trim(),
     phone: String(formData.get("phone") ?? "").trim(),
     email: (String(formData.get("email") ?? "").trim() || undefined) as string | undefined,
     notes: (String(formData.get("notes") ?? "").trim() || undefined) as string | undefined,
+    tier: tierRaw === "" ? undefined : tierRaw,
   });
   if (!parsed.success) {
     return { ok: false, fieldErrors: flat(parsed.error.flatten().fieldErrors) };

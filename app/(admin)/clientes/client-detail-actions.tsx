@@ -8,12 +8,15 @@ import { ClientFormModal } from "./client-form-modal";
 import { VehicleFormModal, type VehicleData } from "./vehicle-form-modal";
 import { deleteClientAction, deleteVehicleAction } from "./actions";
 
+import type { ClientTier } from "@/lib/schemas";
+
 interface ClientData {
   id: string;
   fullName: string;
   phone: string;
   email?: string;
   notes?: string;
+  tier?: ClientTier;
 }
 
 export function ClientDetailHeaderActions({ client }: { client: ClientData }) {

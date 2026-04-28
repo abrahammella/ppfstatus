@@ -26,6 +26,13 @@ const UpdateNotesSchema = z.object({
   notes: z.string().max(500).optional(),
 });
 
+const UpdateFullSchema = z.object({
+  id: z.string().min(1),
+  type: ServiceTypeSchema,
+  completedAt: z.string().datetime({ offset: true }),
+  notes: z.string().max(500).optional(),
+});
+
 function flat(obj: Record<string, string[] | undefined>): Record<string, string> {
   const out: Record<string, string> = {};
   for (const [k, v] of Object.entries(obj)) if (v && v[0]) out[k] = v[0];
@@ -113,6 +120,53 @@ export async function updateServiceNotesAction(
   await rewriteServices(all);
   revalidatePath("/servicios");
   revalidatePath(`/clientes/${s.clientId}`);
+  return { ok: true };
+}
+
+export async function updateServiceFullAction(
+  _prev: ActionResult,
+  formData: FormData,
+): Promise<ActionResult> {
+  await requireRole("admin");
+  const completed = toIsoFromLocal(String(formData.get("completedAt") ?? ""));
+  if (!completed) return { ok: false, fieldErrors: { completedAt: "Fecha inválida." } };
+
+  const parsed = UpdateFullSchema.safeParse({
+    id: String(formData.get("id") ?? ""),
+    type: String(formData.get("type") ?? ""),
+    completedAt: completed,
+    notes: (String(formData.get("notes") ?? "").trim() || undefined) as string | undefined,
+  });
+  if (!parsed.success) {
+    return { ok: false, fieldErrors: flat(parsed.error.flatten().fieldErrors) };
+  }
+
+  const services = await repos.services.list();
+  const s = services.find((x) => x.id === parsed.data.id);
+  if (!s) return { ok: false, error: "Servicio no encontrado." };
+
+  const all = services.map((x) =>
+    x.id === s.id
+      ? {
+          ...x,
+          type: parsed.data.type,
+          completedAt: parsed.data.completedAt,
+          notes: parsed.data.notes,
+        }
+      : x,
+  );
+  await rewriteServices(all);
+
+  // Bump client lastVisit if needed
+  const client = await repos.clients.findById(s.clientId);
+  if (client && (!client.lastVisitAt || client.lastVisitAt < parsed.data.completedAt)) {
+    await repos.clients.update(s.clientId, { lastVisitAt: parsed.data.completedAt });
+  }
+
+  revalidatePath("/servicios");
+  revalidatePath(`/servicios/${s.id}`);
+  revalidatePath(`/clientes/${s.clientId}`);
+  revalidatePath("/dashboard");
   return { ok: true };
 }
 

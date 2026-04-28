@@ -4,6 +4,8 @@ import { useState, useTransition, useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { Modal } from "@/components/ui/modal";
 import {
+  FormField,
+  FormSelect,
   FormTextarea,
   PrimaryButton,
   GhostButton,
@@ -15,14 +17,23 @@ import {
 } from "./service-form-modal";
 import {
   deleteServiceAction,
-  updateServiceNotesAction,
+  updateServiceFullAction,
   type ActionResult,
 } from "./actions";
 
 interface ServiceRowData {
   id: string;
   clientId: string;
+  type?: "PPF" | "CeramicCoating" | "Both";
+  completedAt?: string;
   notes?: string;
+}
+
+function toLocalInput(iso?: string): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 export function ServiceRowActions({ service }: { service: ServiceRowData }) {
@@ -32,7 +43,7 @@ export function ServiceRowActions({ service }: { service: ServiceRowData }) {
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [editState, editAction, editPending] = useActionState<ActionResult, FormData>(
-    updateServiceNotesAction,
+    updateServiceFullAction,
     { ok: true },
   );
 
@@ -57,7 +68,7 @@ export function ServiceRowActions({ service }: { service: ServiceRowData }) {
           onClick={() => setEditOpen(true)}
           className="text-[11px] font-bold uppercase tracking-wide rounded-lg px-2.5 py-1 text-brand-red-700 hover:bg-brand-red-50"
         >
-          Notas
+          Editar
         </button>
         <button
           type="button"
@@ -71,7 +82,8 @@ export function ServiceRowActions({ service }: { service: ServiceRowData }) {
       <Modal
         open={editOpen}
         onClose={() => setEditOpen(false)}
-        title="Editar notas"
+        title="Editar servicio"
+        description="Modifica el tipo, fecha o notas del servicio."
       >
         <form
           action={async (fd) => {
@@ -84,17 +96,37 @@ export function ServiceRowActions({ service }: { service: ServiceRowData }) {
           }}
           className="space-y-4"
         >
+          <div className="grid sm:grid-cols-2 gap-3">
+            <FormSelect
+              label="Tipo"
+              name="type"
+              defaultValue={service.type ?? "PPF"}
+              options={[
+                { value: "PPF", label: "PPF" },
+                { value: "CeramicCoating", label: "Ceramic Coating" },
+                { value: "Both", label: "PPF + Ceramic Coating" },
+              ]}
+            />
+            <FormField
+              label="Fecha completado"
+              name="completedAt"
+              type="datetime-local"
+              required
+              defaultValue={toLocalInput(service.completedAt)}
+              error={editState.fieldErrors?.completedAt}
+            />
+          </div>
           <FormTextarea
             label="Notas"
             name="notes"
-            rows={4}
+            rows={3}
             defaultValue={service.notes}
             error={editState.fieldErrors?.notes}
           />
           <div className="flex items-center justify-end gap-2 pt-2 border-t border-zinc-100">
             <GhostButton onClick={() => setEditOpen(false)}>Cancelar</GhostButton>
             <PrimaryButton type="submit" disabled={editPending}>
-              {editPending ? "Guardando…" : "Guardar"}
+              {editPending ? "Guardando…" : "Guardar cambios"}
             </PrimaryButton>
           </div>
         </form>

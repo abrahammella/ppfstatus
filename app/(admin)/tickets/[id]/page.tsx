@@ -9,16 +9,31 @@ import { progressPercent, ROLE_LABELS } from "@/lib/flow/ppf-stages";
 import { CATEGORY_LABELS, CATEGORY_ORDER } from "@/lib/schemas";
 import { completeStepAction } from "@/app/(employee)/ticket/[id]/actions";
 import { SectionCard } from "@/components/dashboard/section-card";
+import { ReassignButton } from "./reassign-modal";
+import { CommentsThread } from "@/components/ticket/comments-thread";
+import { getSession } from "@/lib/auth/session";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminTicketPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [ticket, catalog] = await Promise.all([
+  const [ticket, catalog, users, session] = await Promise.all([
     getEnrichedTicket(id),
     repos.catalog.list(),
+    repos.users.list(),
+    getSession(),
   ]);
   if (!ticket) notFound();
+
+  const tecnicos = users
+    .filter((u) => u.role === "tecnico" && u.active)
+    .map((u) => ({ id: u.id, name: u.name }));
+  const especialistas = users
+    .filter((u) => u.role === "especialista" && u.active)
+    .map((u) => ({ id: u.id, name: u.name }));
+  const qcs = users
+    .filter((u) => u.role === "qc" && u.active)
+    .map((u) => ({ id: u.id, name: u.name }));
 
   const completed = new Set(ticket.steps.filter((s) => s.completed).map((s) => s.key));
   const pct = progressPercent(ticket.isOfferVehicle, completed);
@@ -164,6 +179,17 @@ export default async function AdminTicketPage({ params }: { params: Promise<{ id
                 );
               })}
             </div>
+            <ReassignButton
+              ticketId={ticket.id}
+              current={{
+                assignedTecnicoId: ticket.assignedTecnicoId,
+                assignedEspecialistaId: ticket.assignedEspecialistaId,
+                assignedQcId: ticket.assignedQcId,
+              }}
+              tecnicos={tecnicos}
+              especialistas={especialistas}
+              qcs={qcs}
+            />
           </Section>
 
           <Section title="Tiempos">
@@ -193,6 +219,20 @@ export default async function AdminTicketPage({ params }: { params: Promise<{ id
           </Section>
         </SectionCard>
       </div>
+
+      <SectionCard delay={0.24}>
+        <h2 className="text-base font-black uppercase tracking-tight text-zinc-900 mb-4">
+          Comentarios del equipo
+        </h2>
+        <CommentsThread
+          ticketId={ticket.id}
+          comments={ticket.comments ?? []}
+          authors={users.map((u) => ({ id: u.id, name: u.name, role: u.role }))}
+          currentUserId={session?.sub ?? ""}
+          currentUserRole={session?.role ?? "admin"}
+          canComment={true}
+        />
+      </SectionCard>
     </div>
   );
 }

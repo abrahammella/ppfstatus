@@ -5,6 +5,8 @@ import {
   NewServiceButton,
   ServiceRowActions,
 } from "./service-row-actions";
+import { SearchTable } from "@/components/ui/search-table";
+import { ExportServicesButton } from "./export-button";
 
 export const dynamic = "force-dynamic";
 
@@ -50,9 +52,16 @@ export default async function ServiciosPage() {
             {services.length === 1 ? "" : "s"} (incluye históricos pre-plataforma).
           </p>
         </div>
-        <NewServiceButton clients={clientOpts} vehicles={vehicleOpts} />
+        <div className="flex items-center gap-2">
+          <ExportServicesButton />
+          <NewServiceButton clients={clientOpts} vehicles={vehicleOpts} />
+        </div>
       </div>
 
+      <SearchTable
+        placeholder="Buscar por vehículo, cliente, placa, tipo o notas…"
+        totalCount={services.length}
+      >
       <div className="rounded-3xl bg-white border border-zinc-200/80 shadow-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 text-[11px] font-bold uppercase tracking-wide">
@@ -70,7 +79,11 @@ export default async function ServiciosPage() {
               const v = vMap.get(s.vehicleId);
               const c = cMap.get(s.clientId);
               return (
-                <tr key={s.id} className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/60 transition">
+                <tr
+                  key={s.id}
+                  data-search={`${v ? `${v.brand} ${v.model} ${v.year} ${v.plate}` : ""} ${c?.fullName ?? ""} ${TYPE_LABEL[s.type]} ${s.notes ?? ""}`.toLowerCase()}
+                  className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/60 transition"
+                >
                   <td className="px-5 py-3">
                     <Link
                       href={`/servicios/${s.id}`}
@@ -114,7 +127,15 @@ export default async function ServiciosPage() {
                       >
                         Ver detalle
                       </Link>
-                      <ServiceRowActions service={{ id: s.id, clientId: s.clientId, notes: s.notes }} />
+                      <ServiceRowActions
+                        service={{
+                          id: s.id,
+                          clientId: s.clientId,
+                          type: s.type,
+                          completedAt: s.completedAt,
+                          notes: s.notes,
+                        }}
+                      />
                     </div>
                   </td>
                 </tr>
@@ -131,6 +152,7 @@ export default async function ServiciosPage() {
           </tbody>
         </table>
       </div>
+      </SearchTable>
     </div>
   );
 }

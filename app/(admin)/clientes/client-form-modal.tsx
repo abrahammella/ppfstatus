@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Modal } from "@/components/ui/modal";
 import {
   FormField,
+  FormSelect,
   FormTextarea,
   PrimaryButton,
   GhostButton,
@@ -14,6 +15,7 @@ import {
   updateClientAction,
   type ActionResult,
 } from "./actions";
+import type { ClientTier } from "@/lib/schemas";
 
 interface ClientData {
   id: string;
@@ -21,6 +23,7 @@ interface ClientData {
   phone: string;
   email?: string;
   notes?: string;
+  tier?: ClientTier;
 }
 
 export function ClientFormModal({
@@ -76,6 +79,17 @@ export function ClientFormModal({
             error={state.fieldErrors?.email}
           />
         </div>
+        <FormSelect
+          label="Tier (opcional)"
+          name="tier"
+          defaultValue={initial?.tier ?? ""}
+          options={[
+            { value: "", label: "Sin asignar" },
+            { value: "basico", label: "Básico" },
+            { value: "deluxe", label: "Deluxe" },
+            { value: "premier", label: "Premier" },
+          ]}
+        />
         <FormTextarea
           label="Notas internas (opcional)"
           name="notes"

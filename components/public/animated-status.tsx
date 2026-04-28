@@ -1,9 +1,63 @@
 "use client";
 
 import Image from "next/image";
+import { useMemo } from "react";
 import { motion, type Variants } from "framer-motion";
 import { AnimatedNumber } from "@/components/dashboard/animated-number";
 import { STAGES, STAGE_LABELS, STAGE_LABELS_SHORT, type Stage } from "@/lib/flow/ppf-stages";
+
+const CONFETTI_COLORS = [
+  "oklch(0.62 0.22 25)", // brand-red
+  "oklch(0.86 0.18 90)", // brand-yellow
+  "oklch(0.99 0 0)", // white
+  "oklch(0.49 0.21 25)", // brand-red dark
+];
+
+function ConfettiBurst() {
+  const pieces = useMemo(
+    () =>
+      Array.from({ length: 50 }, (_, i) => ({
+        left: Math.random() * 100,
+        delay: Math.random() * 0.5,
+        duration: 2.5 + Math.random() * 2,
+        size: 6 + Math.random() * 6,
+        rotate: Math.random() * 360,
+        color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+        drift: (Math.random() - 0.5) * 80,
+      })),
+    [],
+  );
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden z-20">
+      {pieces.map((p, i) => (
+        <motion.span
+          key={i}
+          className="absolute top-0 rounded-sm"
+          style={{
+            left: `${p.left}%`,
+            width: p.size,
+            height: p.size * 0.4,
+            backgroundColor: p.color,
+          }}
+          initial={{ y: -40, x: 0, opacity: 0, rotate: 0 }}
+          animate={{
+            y: ["-10%", "120%"],
+            x: [0, p.drift],
+            opacity: [0, 1, 1, 0],
+            rotate: [0, p.rotate * 2],
+          }}
+          transition={{
+            duration: p.duration,
+            delay: 1.3 + p.delay,
+            ease: "easeIn",
+            repeat: 1,
+            repeatDelay: 3,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 const VISIBLE_STAGES: Stage[] = ["recepcion", "lavado", "aplicacion", "qc", "entrega"];
 
@@ -69,7 +123,9 @@ export function AnimatedStatus({
   });
 
   return (
-    <div className="w-full max-w-xl">
+    <div className="relative w-full max-w-xl">
+      {isCompleted ? <ConfettiBurst /> : null}
+
       {/* Logo above card */}
       <motion.div
         initial={{ opacity: 0, y: -10, scale: 0.92 }}
@@ -361,6 +417,7 @@ export function AnimatedStatus({
               ) : null}
             </div>
           </motion.div>
+
         </motion.div>
 
         <motion.div

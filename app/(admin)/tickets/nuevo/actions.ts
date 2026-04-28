@@ -112,6 +112,7 @@ export async function createTicketAction(
     catalogItemIds: tinput.data.catalogItemIds,
     status: "recepcion",
     steps,
+    comments: [],
     assignedTecnicoId: tinput.data.assignedTecnicoId,
     assignedEspecialistaId: tinput.data.assignedEspecialistaId,
     assignedQcId: tinput.data.assignedQcId,

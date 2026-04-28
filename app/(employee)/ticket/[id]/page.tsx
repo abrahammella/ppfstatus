@@ -8,6 +8,8 @@ import { ProgressPill } from "@/components/ticket/progress-pill";
 import { progressPercent, ROLE_LABELS } from "@/lib/flow/ppf-stages";
 import { SectionCard } from "@/components/dashboard/section-card";
 import { completeStepAction } from "./actions";
+import { CommentsThread } from "@/components/ticket/comments-thread";
+import { repos } from "@/lib/repositories";
 
 export const dynamic = "force-dynamic";
 
@@ -25,12 +27,26 @@ export default async function EmployeeTicketPage({
 }) {
   const session = await requireSession();
   const { id } = await params;
-  const ticket = await getEnrichedTicket(id);
+  const [ticket, users] = await Promise.all([
+    getEnrichedTicket(id),
+    repos.users.list(),
+  ]);
   if (!ticket) notFound();
 
   const completed = new Set(ticket.steps.filter((s) => s.completed).map((s) => s.key));
   const pct = progressPercent(ticket.isOfferVehicle, completed);
   const home = HOME_BY_ROLE[session.role];
+
+  // Employee can comment only if assigned to this ticket.
+  const assignedId =
+    session.role === "tecnico"
+      ? ticket.assignedTecnicoId
+      : session.role === "especialista"
+        ? ticket.assignedEspecialistaId
+        : session.role === "qc"
+          ? ticket.assignedQcId
+          : null;
+  const canComment = session.role === "admin" || assignedId === session.sub;
 
   return (
     <div className="flex flex-col gap-6">
@@ -78,6 +94,20 @@ export default async function EmployeeTicketPage({
           role={session.role}
           actorId={session.sub}
           completeAction={completeStepAction}
+        />
+      </SectionCard>
+
+      <SectionCard delay={0.18}>
+        <h2 className="text-base font-black uppercase tracking-tight text-zinc-900 mb-4">
+          Comentarios del equipo
+        </h2>
+        <CommentsThread
+          ticketId={ticket.id}
+          comments={ticket.comments ?? []}
+          authors={users.map((u) => ({ id: u.id, name: u.name, role: u.role }))}
+          currentUserId={session.sub}
+          currentUserRole={session.role}
+          canComment={canComment}
         />
       </SectionCard>
     </div>

@@ -1,6 +1,7 @@
 import { repos } from "@/lib/repositories";
 import Link from "next/link";
 import { ClientRowActions, NewClientButton } from "./client-row-actions";
+import { SearchTable } from "@/components/ui/search-table";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +35,10 @@ export default async function ClientesPage() {
         <NewClientButton />
       </div>
 
+      <SearchTable
+        placeholder="Buscar por nombre, teléfono o email…"
+        totalCount={clients.length}
+      >
       <div className="rounded-3xl bg-white border border-zinc-200/80 shadow-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 text-[11px] font-bold uppercase tracking-wide">
@@ -50,7 +55,11 @@ export default async function ClientesPage() {
             {clients.map((c) => {
               const s = stats(c.id);
               return (
-                <tr key={c.id} className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/60 transition">
+                <tr
+                  key={c.id}
+                  data-search={`${c.fullName} ${c.phone} ${c.email ?? ""}`.toLowerCase()}
+                  className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/60 transition"
+                >
                   <td className="px-5 py-3">
                     <Link href={`/clientes/${c.id}`} className="block group">
                       <div className="font-semibold text-zinc-900 group-hover:text-brand-red-700 transition">
@@ -74,7 +83,14 @@ export default async function ClientesPage() {
                   </td>
                   <td className="px-5 py-3 text-right">
                     <ClientRowActions
-                      client={{ id: c.id, fullName: c.fullName, phone: c.phone, email: c.email, notes: c.notes }}
+                      client={{
+                        id: c.id,
+                        fullName: c.fullName,
+                        phone: c.phone,
+                        email: c.email,
+                        notes: c.notes,
+                        tier: c.tier,
+                      }}
                     />
                   </td>
                 </tr>
@@ -90,6 +106,7 @@ export default async function ClientesPage() {
           </tbody>
         </table>
       </div>
+      </SearchTable>
     </div>
   );
 }

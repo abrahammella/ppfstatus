@@ -6,6 +6,7 @@ import { Modal } from "@/components/ui/modal";
 import { GhostButton, PrimaryButton } from "@/components/ui/form-fields";
 import { ClientFormModal } from "./client-form-modal";
 import { deleteClientAction } from "./actions";
+import type { ClientTier } from "@/lib/schemas";
 
 interface ClientRowData {
   id: string;
@@ -13,6 +14,7 @@ interface ClientRowData {
   phone: string;
   email?: string;
   notes?: string;
+  tier?: ClientTier;
 }
 
 export function ClientRowActions({ client }: { client: ClientRowData }) {

@@ -20,12 +20,22 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>;
 export type PublicUser = Omit<User, "passwordHash">;
 
+export const ClientTierSchema = z.enum(["basico", "deluxe", "premier"]).optional();
+export type ClientTier = z.infer<typeof ClientTierSchema>;
+
+export const TIER_LABELS: Record<NonNullable<ClientTier>, string> = {
+  basico: "Básico",
+  deluxe: "Deluxe",
+  premier: "Premier",
+};
+
 export const ClientSchema = z.object({
   id,
   fullName: z.string().min(2),
   phone: z.string().min(7),
   email: z.string().email().optional(),
   notes: z.string().optional(),
+  tier: ClientTierSchema,
   createdAt: isoDate,
   lastVisitAt: isoDate.optional(),
 });
@@ -55,6 +65,14 @@ export const StepKeySchema: z.ZodType<StepKey> = z.enum([
   "revision_final",
   "entrega",
 ]);
+
+export const TicketCommentSchema = z.object({
+  id,
+  authorId: id,
+  text: z.string().min(1).max(1000),
+  createdAt: isoDate,
+});
+export type TicketComment = z.infer<typeof TicketCommentSchema>;
 
 export const TicketStepSchema = z.object({
   key: StepKeySchema,
@@ -112,6 +130,7 @@ export const TicketSchema = z.object({
   catalogItemIds: z.array(id).default([]),
   status: StageSchema,
   steps: z.array(TicketStepSchema),
+  comments: z.array(TicketCommentSchema).default([]),
   assignedTecnicoId: id.optional(),
   assignedEspecialistaId: id.optional(),
   assignedQcId: id.optional(),
@@ -136,7 +155,11 @@ export type Service = z.infer<typeof ServiceSchema>;
 
 // ---- Form schemas (input from UI) ----
 
-export const ClientInputSchema = ClientSchema.omit({ id: true, createdAt: true, lastVisitAt: true });
+export const ClientInputSchema = ClientSchema.omit({
+  id: true,
+  createdAt: true,
+  lastVisitAt: true,
+});
 export const VehicleInputSchema = VehicleSchema.omit({ id: true });
 export const UserInputSchema = UserSchema.omit({ id: true, passwordHash: true, createdAt: true }).extend({
   password: z.string().min(8),

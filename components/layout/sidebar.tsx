@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { logoutAction } from "@/app/(public)/login/actions";
 import type { Role } from "@/lib/flow/ppf-stages";
 import { ROLE_LABELS } from "@/lib/flow/ppf-stages";
@@ -68,12 +70,21 @@ const EMPLOYEE_NAV: Record<Exclude<Role, "admin">, NavItem[]> = {
   qc: [{ href: "/qc", label: "Pendientes de QC", icon: ICON_BOARD }],
 };
 
-export function Sidebar({ role, name }: { role: Role; name: string }) {
-  const pathname = usePathname();
-  const items = role === "admin" ? ADMIN_NAV : EMPLOYEE_NAV[role];
-
+function SidebarContent({
+  role,
+  name,
+  items,
+  pathname,
+  onNavigate,
+}: {
+  role: Role;
+  name: string;
+  items: NavItem[];
+  pathname: string;
+  onNavigate?: () => void;
+}) {
   return (
-    <aside className="hidden md:flex md:w-64 lg:w-72 flex-col bg-brand-black text-zinc-100 rounded-r-3xl m-2 ml-0 overflow-hidden ring-1 ring-white/5 relative">
+    <>
       <div className="absolute -top-24 -left-16 size-56 rounded-full brand-glow blur-3xl opacity-60 pointer-events-none" />
 
       <div className="relative px-5 py-5 flex items-center gap-3 border-b border-white/5">
@@ -91,13 +102,14 @@ export function Sidebar({ role, name }: { role: Role; name: string }) {
         <div className="text-xs text-zinc-400 mt-1">{ROLE_LABELS[role]}</div>
       </div>
 
-      <nav className="relative flex-1 px-3 py-4 space-y-1">
+      <nav className="relative flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         {items.map((it) => {
           const active = pathname === it.href || pathname.startsWith(`${it.href}/`);
           return (
             <Link
               key={it.href}
               href={it.href}
+              onClick={onNavigate}
               className={clsx(
                 "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition relative",
                 active
@@ -141,6 +153,103 @@ export function Sidebar({ role, name }: { role: Role; name: string }) {
           </button>
         </form>
       </div>
-    </aside>
+    </>
+  );
+}
+
+export function Sidebar({ role, name }: { role: Role; name: string }) {
+  const pathname = usePathname();
+  const items = role === "admin" ? ADMIN_NAV : EMPLOYEE_NAV[role];
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Close drawer on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll when drawer is open
+  useEffect(() => {
+    if (mobileOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [mobileOpen]);
+
+  return (
+    <>
+      {/* Mobile top bar with hamburger */}
+      <div className="md:hidden sticky top-0 z-30 bg-brand-black text-zinc-100 px-4 py-3 flex items-center justify-between ring-1 ring-white/5">
+        <div className="flex items-center gap-2.5">
+          <div className="relative size-9 rounded-lg bg-black ring-1 ring-white/10 overflow-hidden">
+            <Image src="/brand/logojs.jpg" alt="JS Detailing Center" fill sizes="36px" className="object-cover" />
+          </div>
+          <div>
+            <div className="text-xs font-black tracking-[0.18em]">JS DETAILING</div>
+            <div className="text-[9px] font-bold tracking-[0.3em] text-brand-red-500 -mt-0.5">CENTER</div>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => setMobileOpen(true)}
+          aria-label="Abrir menú"
+          className="size-10 rounded-xl bg-white/5 hover:bg-white/10 ring-1 ring-white/10 flex items-center justify-center transition"
+        >
+          <svg viewBox="0 0 24 24" fill="none" className="size-5" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Desktop sidebar */}
+      <aside className="hidden md:flex md:w-64 lg:w-72 flex-col bg-brand-black text-zinc-100 rounded-r-3xl m-2 ml-0 overflow-hidden ring-1 ring-white/5 relative">
+        <SidebarContent role={role} name={name} items={items} pathname={pathname} />
+      </aside>
+
+      {/* Mobile drawer */}
+      <AnimatePresence>
+        {mobileOpen ? (
+          <>
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileOpen(false)}
+              className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.aside
+              key="drawer"
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", stiffness: 320, damping: 32 }}
+              className="md:hidden fixed inset-y-0 left-0 z-50 w-72 bg-brand-black text-zinc-100 flex flex-col overflow-hidden ring-1 ring-white/5 relative"
+            >
+              <button
+                type="button"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Cerrar menú"
+                className="absolute top-3 right-3 z-10 size-9 rounded-xl bg-white/5 hover:bg-white/10 ring-1 ring-white/10 flex items-center justify-center transition"
+              >
+                <svg viewBox="0 0 24 24" fill="none" className="size-4" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" d="M6 6l12 12M6 18L18 6" />
+                </svg>
+              </button>
+              <SidebarContent
+                role={role}
+                name={name}
+                items={items}
+                pathname={pathname}
+                onNavigate={() => setMobileOpen(false)}
+              />
+            </motion.aside>
+          </>
+        ) : null}
+      </AnimatePresence>
+    </>
   );
 }

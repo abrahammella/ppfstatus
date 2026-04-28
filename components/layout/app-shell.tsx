@@ -17,10 +17,10 @@ export function AppShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex min-h-dvh md:h-screen md:overflow-hidden flex-col md:flex-row">
       <Sidebar role={role} name={name} />
-      <main className="flex-1 overflow-y-auto">
-        <header className="px-6 lg:px-10 pt-8 pb-4">
+      <main className="flex-1 md:overflow-y-auto">
+        <header className="px-4 sm:px-6 lg:px-10 pt-6 md:pt-8 pb-4">
           <div className="flex items-end justify-between gap-4 flex-wrap">
             <div>
               {title ? (
@@ -33,7 +33,7 @@ export function AppShell({
             {actions ? <div className="flex items-center gap-2">{actions}</div> : null}
           </div>
         </header>
-        <div className="px-6 lg:px-10 pb-12">{children}</div>
+        <div className="px-4 sm:px-6 lg:px-10 pb-12">{children}</div>
       </main>
     </div>
   );
