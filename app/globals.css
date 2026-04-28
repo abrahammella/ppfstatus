@@ -1,0 +1,81 @@
+@import "@heroui/styles";
+@import "@mantine/core/styles.css" layer(mantine);
+@import "@mantine/notifications/styles.css" layer(mantine);
+@import "@mantine/dates/styles.css" layer(mantine);
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* JS Detailing brand palette */
+  --color-brand-red-50: oklch(0.97 0.02 25);
+  --color-brand-red-100: oklch(0.93 0.06 25);
+  --color-brand-red-500: oklch(0.62 0.22 25);
+  --color-brand-red-600: oklch(0.56 0.23 25);
+  --color-brand-red-700: oklch(0.49 0.21 25);
+  --color-brand-red-900: oklch(0.32 0.14 25);
+  --color-brand-yellow-300: oklch(0.92 0.16 95);
+  --color-brand-yellow-400: oklch(0.86 0.18 90);
+  --color-brand-black: oklch(0.06 0 0);
+}
+
+:root {
+  --background: oklch(0.98 0.01 240);
+  --surface: oklch(1 0 0);
+  --accent: oklch(0.62 0.18 230);
+  --accent-foreground: oklch(0.99 0 0);
+  --radius: 0.75rem;
+  --field-radius: 0.5rem;
+}
+
+.dark {
+  --background: oklch(0.18 0.02 240);
+  --surface: oklch(0.22 0.02 240);
+}
+
+html,
+body {
+  height: 100%;
+  background:
+    radial-gradient(ellipse 70% 45% at 100% 0%, oklch(0.94 0.03 25 / 0.45), transparent 65%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, oklch(0.96 0.02 25 / 0.35), transparent 70%),
+    linear-gradient(180deg, oklch(0.985 0 0) 0%, oklch(0.965 0.005 25) 100%);
+  background-attachment: fixed;
+  color: oklch(0.21 0.01 286);
+  font-family: var(--font-sans);
+}
+
+/* Showroom background — black with a subtle red glow, evoking the brand
+ * marketing material (PPF FULL CAR ad). Used on public login + status. */
+.showroom-bg {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, oklch(0.40 0.20 25 / 0.55), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 0% 100%, oklch(0.32 0.18 25 / 0.40), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, oklch(0.32 0.18 25 / 0.40), transparent 70%),
+    oklch(0.06 0 0);
+}
+
+/* Subtle red glow for floating decorative shapes inside the dark panel. */
+.brand-glow {
+  background:
+    radial-gradient(ellipse at 50% 30%, oklch(0.55 0.23 25 / 0.55), transparent 60%),
+    radial-gradient(ellipse at 30% 80%, oklch(0.45 0.20 25 / 0.35), transparent 65%);
+}
+
+/* Slow float animation for the decorative cards in the left panel. */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50%      { transform: translateY(-8px) rotate(var(--rot, 0deg)); }
+}
+.float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* Sky pattern accent for the public layout */
+.sky-bg {
+  background-image:
+    radial-gradient(white 1.5px, transparent 1.5px),
+    radial-gradient(white 1px, transparent 1px),
+    linear-gradient(180deg, oklch(0.78 0.08 230) 0%, oklch(0.86 0.05 235) 100%);
+  background-size: 80px 80px, 60px 60px, 100% 100%;
+  background-position: 0 0, 30px 40px, 0 0;
+}

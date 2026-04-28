@@ -1,0 +1,1018 @@
+{
+  "users": [
+    {
+      "id": "u_admin",
+      "email": "admin@jsdetailing.do",
+      "passwordHash": "$2b$12$D0CrgKshtVBrsL2dkhf2lOZ/LUJejO6jIrJ0rMcj49pJgc.NOxvse",
+      "role": "admin",
+      "name": "Carolina Ramírez",
+      "active": true,
+      "createdAt": "2026-04-01T12:00:00.000Z"
+    },
+    {
+      "id": "u_tec1",
+      "email": "tecnico@jsdetailing.do",
+      "passwordHash": "$2b$12$zv5IWYdk0dkLLvC83NteKeEvqNMgOsDkKka5ngDgcdvTgbE7yPpea",
+      "role": "tecnico",
+      "name": "Luis Báez",
+      "active": true,
+      "createdAt": "2026-04-01T12:00:00.000Z"
+    },
+    {
+      "id": "u_esp1",
+      "email": "especialista@jsdetailing.do",
+      "passwordHash": "$2b$12$bbHwYd8nk74tOjAJYtSugOXY.RUZaV6qwETfn8XcoKzhZMmh0fgYG",
+      "role": "especialista",
+      "name": "Ramón Núñez",
+      "active": true,
+      "createdAt": "2026-04-01T12:00:00.000Z"
+    },
+    {
+      "id": "u_qc1",
+      "email": "qc@jsdetailing.do",
+      "passwordHash": "$2b$12$dsM4Z7RoECjU4A/anqjM0OJWwctish5qt9w6jiQc9RjquGhyAHemG",
+      "role": "qc",
+      "name": "Patricia Then",
+      "active": true,
+      "createdAt": "2026-04-01T12:00:00.000Z"
+    }
+  ],
+  "clients": [
+    {
+      "id": "c_001",
+      "fullName": "Carlos Méndez",
+      "phone": "+18095550101",
+      "email": "carlos.mendez@example.com",
+      "createdAt": "2026-02-10T14:00:00.000Z",
+      "lastVisitAt": "2026-04-15T17:00:00.000Z"
+    },
+    {
+      "id": "c_002",
+      "fullName": "María Pérez",
+      "phone": "+18095550202",
+      "email": "maria.perez@example.com",
+      "createdAt": "2026-01-05T11:00:00.000Z",
+      "lastVisitAt": "2026-04-25T19:00:00.000Z"
+    },
+    {
+      "id": "c_003",
+      "fullName": "Juan Rodríguez",
+      "phone": "+18095550303",
+      "createdAt": "2026-03-12T09:30:00.000Z",
+      "lastVisitAt": "2026-04-26T16:00:00.000Z"
+    },
+    {
+      "id": "c_004",
+      "fullName": "Sofía Castillo",
+      "phone": "+18095550404",
+      "email": "sofia.c@example.com",
+      "createdAt": "2026-02-20T10:00:00.000Z"
+    },
+    {
+      "id": "c_005",
+      "fullName": "Diego Fernández",
+      "phone": "+18095550505",
+      "createdAt": "2026-04-01T15:00:00.000Z"
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "v_001",
+      "clientId": "c_001",
+      "brand": "Tesla",
+      "model": "Model Y",
+      "year": 2024,
+      "plate": "A123456",
+      "color": "Blanco perla"
+    },
+    {
+      "id": "v_002",
+      "clientId": "c_001",
+      "brand": "BMW",
+      "model": "M3",
+      "year": 2022,
+      "plate": "A987654",
+      "color": "Gris mineral"
+    },
+    {
+      "id": "v_003",
+      "clientId": "c_002",
+      "brand": "Toyota",
+      "model": "RAV4 Hybrid",
+      "year": 2025,
+      "plate": "B112233",
+      "color": "Negro medianoche"
+    },
+    {
+      "id": "v_004",
+      "clientId": "c_003",
+      "brand": "Honda",
+      "model": "Civic Type R",
+      "year": 2023,
+      "plate": "C445566",
+      "color": "Championship White"
+    },
+    {
+      "id": "v_005",
+      "clientId": "c_004",
+      "brand": "Audi",
+      "model": "Q5",
+      "year": 2024,
+      "plate": "D778899",
+      "color": "Azul Navarra"
+    },
+    {
+      "id": "v_006",
+      "clientId": "c_005",
+      "brand": "Hyundai",
+      "model": "Ioniq 5",
+      "year": 2025,
+      "plate": "E101112",
+      "color": "Cyber Gray"
+    },
+    {
+      "id": "v_007",
+      "clientId": "c_002",
+      "brand": "Lexus",
+      "model": "RX 500h",
+      "year": 2024,
+      "plate": "B554433",
+      "color": "Eminent White"
+    },
+    {
+      "id": "v_008",
+      "clientId": "c_003",
+      "brand": "Mazda",
+      "model": "CX-5",
+      "year": 2023,
+      "plate": "C778800",
+      "color": "Soul Red Crystal"
+    }
+  ],
+  "tickets": [
+    {
+      "id": "tk_001",
+      "vehicleId": "v_001",
+      "clientId": "c_001",
+      "isOfferVehicle": true,
+      "serviceType": "Both",
+      "status": "lavado",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-28T13:00:00.000Z"
+        },
+        {
+          "key": "enviar_autotuning",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-28T13:30:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-28T14:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": false
+        },
+        {
+          "key": "pulido",
+          "completed": false
+        },
+        {
+          "key": "lavado_final",
+          "completed": false
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": false
+        },
+        {
+          "key": "detallado",
+          "completed": false
+        },
+        {
+          "key": "revision_final",
+          "completed": false
+        },
+        {
+          "key": "entrega",
+          "completed": false
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-28T13:00:00.000Z",
+      "etaAt": "2026-04-30T18:00:00.000Z",
+      "publicToken": "dGtfMDAxLjc5bUM0UG5OUy04.6Ah5fM7AGHay7udruuzO7EXG5gupjtta-QiBPKRMfOs"
+    },
+    {
+      "id": "tk_002",
+      "vehicleId": "v_003",
+      "clientId": "c_002",
+      "isOfferVehicle": false,
+      "serviceType": "PPF",
+      "status": "aplicacion",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-27T09:00:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-27T10:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-27T11:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-27T13:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-27T14:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-28T11:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": false
+        },
+        {
+          "key": "revision_final",
+          "completed": false
+        },
+        {
+          "key": "entrega",
+          "completed": false
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-27T09:00:00.000Z",
+      "etaAt": "2026-04-29T17:00:00.000Z",
+      "publicToken": "dGtfMDAyLjJBT1ZGaDU4LUJR.31ZXQD-PK3yivg2-pT8s_EBiOW-hX3DKt2papdK2UQE"
+    },
+    {
+      "id": "tk_003",
+      "vehicleId": "v_004",
+      "clientId": "c_003",
+      "isOfferVehicle": false,
+      "serviceType": "CeramicCoating",
+      "status": "qc",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-26T08:00:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-26T09:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-26T10:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-26T12:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-26T13:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-27T11:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-27T15:00:00.000Z"
+        },
+        {
+          "key": "revision_final",
+          "completed": false
+        },
+        {
+          "key": "entrega",
+          "completed": false
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-26T08:00:00.000Z",
+      "etaAt": "2026-04-28T17:00:00.000Z",
+      "publicToken": "dGtfMDAzLnI0ZUdHN01VNFZB.iaDOtEun-HyZbd82NKlqi9GmHdUKYnmhm0b6GiQuVCs"
+    },
+    {
+      "id": "tk_h01",
+      "vehicleId": "v_002",
+      "clientId": "c_001",
+      "isOfferVehicle": false,
+      "serviceType": "PPF",
+      "status": "completado",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-15T09:00:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-15T10:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-15T11:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-15T13:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-15T14:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-17T10:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-17T13:00:00.000Z"
+        },
+        {
+          "key": "revision_final",
+          "completed": true,
+          "completedBy": "u_qc1",
+          "completedAt": "2026-04-17T15:00:00.000Z"
+        },
+        {
+          "key": "entrega",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-17T17:00:00.000Z"
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-15T09:00:00.000Z",
+      "etaAt": "2026-04-17T18:00:00.000Z",
+      "completedAt": "2026-04-17T17:00:00.000Z",
+      "publicToken": "dGtfaDAxLm9na216YkJpallR.G030OcxyE3sXDwxGBKG9mOqaqyVLmRWEhVWvpQeBvwk"
+    },
+    {
+      "id": "tk_h02",
+      "vehicleId": "v_007",
+      "clientId": "c_002",
+      "isOfferVehicle": false,
+      "serviceType": "CeramicCoating",
+      "status": "completado",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-17T09:00:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-17T10:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-17T11:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-17T13:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-17T14:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-19T10:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-19T13:00:00.000Z"
+        },
+        {
+          "key": "revision_final",
+          "completed": true,
+          "completedBy": "u_qc1",
+          "completedAt": "2026-04-19T15:00:00.000Z"
+        },
+        {
+          "key": "entrega",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-19T17:00:00.000Z"
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-17T09:00:00.000Z",
+      "etaAt": "2026-04-19T17:00:00.000Z",
+      "completedAt": "2026-04-19T17:00:00.000Z",
+      "publicToken": "dGtfaDAyLkhPM0YwWldIcVRZ.po1yy3G9SjYwXyYvjBgeN6HWCJn40ISCaJ8ouWaTHyw"
+    },
+    {
+      "id": "tk_h03",
+      "vehicleId": "v_008",
+      "clientId": "c_003",
+      "isOfferVehicle": true,
+      "serviceType": "Both",
+      "status": "completado",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-18T09:00:00.000Z"
+        },
+        {
+          "key": "enviar_autotuning",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-18T09:30:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-18T10:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-18T11:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-18T13:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-18T14:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-21T10:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-21T13:00:00.000Z"
+        },
+        {
+          "key": "revision_final",
+          "completed": true,
+          "completedBy": "u_qc1",
+          "completedAt": "2026-04-21T15:00:00.000Z"
+        },
+        {
+          "key": "entrega",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-21T17:00:00.000Z"
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-18T09:00:00.000Z",
+      "etaAt": "2026-04-20T17:00:00.000Z",
+      "completedAt": "2026-04-21T17:00:00.000Z",
+      "publicToken": "dGtfaDAzLk55b3JTUjFDUDVJ.8xSodCGkzdiUu2MHSPwjzZmR0-S6M6k4xY7m42yAsH4"
+    },
+    {
+      "id": "tk_h04",
+      "vehicleId": "v_005",
+      "clientId": "c_004",
+      "isOfferVehicle": false,
+      "serviceType": "PPF",
+      "status": "completado",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-19T09:00:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-19T10:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-19T11:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-19T13:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-19T14:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-21T10:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-21T13:00:00.000Z"
+        },
+        {
+          "key": "revision_final",
+          "completed": true,
+          "completedBy": "u_qc1",
+          "completedAt": "2026-04-21T15:00:00.000Z"
+        },
+        {
+          "key": "entrega",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-21T17:00:00.000Z"
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-19T09:00:00.000Z",
+      "etaAt": "2026-04-22T17:00:00.000Z",
+      "completedAt": "2026-04-21T17:00:00.000Z",
+      "publicToken": "dGtfaDA0LmU3c2JyMW5JNm9R.rvVhSdo58vyruzZpNkIMPP3QYkiTJ4VtrPicfX2CgC0"
+    },
+    {
+      "id": "tk_h05",
+      "vehicleId": "v_006",
+      "clientId": "c_005",
+      "isOfferVehicle": false,
+      "serviceType": "CeramicCoating",
+      "status": "completado",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-22T09:00:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-22T10:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-22T11:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-22T13:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-22T14:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-24T10:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-24T13:00:00.000Z"
+        },
+        {
+          "key": "revision_final",
+          "completed": true,
+          "completedBy": "u_qc1",
+          "completedAt": "2026-04-24T15:00:00.000Z"
+        },
+        {
+          "key": "entrega",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-24T17:00:00.000Z"
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-22T09:00:00.000Z",
+      "etaAt": "2026-04-24T18:00:00.000Z",
+      "completedAt": "2026-04-24T17:00:00.000Z",
+      "publicToken": "dGtfaDA1LksyeGdUZ2pXZFFj.ZeVBgVulv2WdWKkgR60Nnq9XhtdiGSYX8uPMFOv5i88"
+    },
+    {
+      "id": "tk_h06",
+      "vehicleId": "v_001",
+      "clientId": "c_001",
+      "isOfferVehicle": false,
+      "serviceType": "Both",
+      "status": "completado",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-23T09:00:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-23T10:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-23T11:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-23T13:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-23T14:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-26T10:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-26T13:00:00.000Z"
+        },
+        {
+          "key": "revision_final",
+          "completed": true,
+          "completedBy": "u_qc1",
+          "completedAt": "2026-04-26T15:00:00.000Z"
+        },
+        {
+          "key": "entrega",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-26T17:00:00.000Z"
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-23T09:00:00.000Z",
+      "etaAt": "2026-04-25T17:00:00.000Z",
+      "completedAt": "2026-04-26T17:00:00.000Z",
+      "publicToken": "dGtfaDA2LjNuU055TmQ5Qk9F.FwBBKlT38lLLHZlj7y68WkuL7tCvJ51XALdn7qChgmM"
+    },
+    {
+      "id": "tk_h07",
+      "vehicleId": "v_003",
+      "clientId": "c_002",
+      "isOfferVehicle": true,
+      "serviceType": "PPF",
+      "status": "completado",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-24T09:00:00.000Z"
+        },
+        {
+          "key": "enviar_autotuning",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-24T09:30:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-24T10:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-24T11:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-24T13:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-24T14:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-26T10:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-26T13:00:00.000Z"
+        },
+        {
+          "key": "revision_final",
+          "completed": true,
+          "completedBy": "u_qc1",
+          "completedAt": "2026-04-26T15:00:00.000Z"
+        },
+        {
+          "key": "entrega",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-26T17:00:00.000Z"
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-24T09:00:00.000Z",
+      "etaAt": "2026-04-26T17:00:00.000Z",
+      "completedAt": "2026-04-26T17:00:00.000Z",
+      "publicToken": "dGtfaDA3Lkg2ZWEydzFTSkJr.0Y1qWVOZHDpyBdFLj2Y8p84SKJF2HTZSOn58oYeNZ-g"
+    },
+    {
+      "id": "tk_h08",
+      "vehicleId": "v_005",
+      "clientId": "c_004",
+      "isOfferVehicle": false,
+      "serviceType": "PPF",
+      "status": "completado",
+      "steps": [
+        {
+          "key": "orden_servicio",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-25T09:00:00.000Z"
+        },
+        {
+          "key": "lavado_inicial",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-25T10:30:00.000Z"
+        },
+        {
+          "key": "descontaminado",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-25T11:30:00.000Z"
+        },
+        {
+          "key": "pulido",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-25T13:00:00.000Z"
+        },
+        {
+          "key": "lavado_final",
+          "completed": true,
+          "completedBy": "u_tec1",
+          "completedAt": "2026-04-25T14:30:00.000Z"
+        },
+        {
+          "key": "cabina_aplicacion",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-27T10:00:00.000Z"
+        },
+        {
+          "key": "detallado",
+          "completed": true,
+          "completedBy": "u_esp1",
+          "completedAt": "2026-04-27T13:00:00.000Z"
+        },
+        {
+          "key": "revision_final",
+          "completed": true,
+          "completedBy": "u_qc1",
+          "completedAt": "2026-04-27T15:00:00.000Z"
+        },
+        {
+          "key": "entrega",
+          "completed": true,
+          "completedBy": "u_admin",
+          "completedAt": "2026-04-27T17:00:00.000Z"
+        }
+      ],
+      "assignedTecnicoId": "u_tec1",
+      "assignedEspecialistaId": "u_esp1",
+      "assignedQcId": "u_qc1",
+      "createdAt": "2026-04-25T09:00:00.000Z",
+      "etaAt": "2026-04-27T17:00:00.000Z",
+      "completedAt": "2026-04-27T17:00:00.000Z",
+      "publicToken": "dGtfaDA4LkhaVnc5OWQ3dno4.irqiqAJ_oKMtGYMnFfeR4zPTlCBW57RSQAZmVrGFDLE"
+    }
+  ],
+  "services": [
+    {
+      "id": "s_001",
+      "vehicleId": "v_002",
+      "clientId": "c_001",
+      "ticketId": "tk_legacy_001",
+      "type": "PPF",
+      "completedAt": "2026-04-15T17:00:00.000Z",
+      "notes": "Aplicación PPF completa frontal."
+    },
+    {
+      "id": "s_002",
+      "vehicleId": "v_007",
+      "clientId": "c_002",
+      "ticketId": "tk_legacy_002",
+      "type": "CeramicCoating",
+      "completedAt": "2026-04-25T19:00:00.000Z",
+      "notes": "Ceramic Coating 9H, 5 años de garantía."
+    },
+    {
+      "id": "s_003",
+      "vehicleId": "v_008",
+      "clientId": "c_003",
+      "ticketId": "tk_legacy_003",
+      "type": "Both",
+      "completedAt": "2026-04-26T16:00:00.000Z"
+    },
+    {
+      "id": "s_h01",
+      "vehicleId": "v_002",
+      "clientId": "c_001",
+      "ticketId": "tk_h01",
+      "type": "PPF",
+      "completedAt": "2026-04-17T17:00:00.000Z"
+    },
+    {
+      "id": "s_h02",
+      "vehicleId": "v_007",
+      "clientId": "c_002",
+      "ticketId": "tk_h02",
+      "type": "CeramicCoating",
+      "completedAt": "2026-04-19T17:00:00.000Z"
+    },
+    {
+      "id": "s_h03",
+      "vehicleId": "v_008",
+      "clientId": "c_003",
+      "ticketId": "tk_h03",
+      "type": "Both",
+      "completedAt": "2026-04-21T17:00:00.000Z"
+    },
+    {
+      "id": "s_h04",
+      "vehicleId": "v_005",
+      "clientId": "c_004",
+      "ticketId": "tk_h04",
+      "type": "PPF",
+      "completedAt": "2026-04-21T17:00:00.000Z"
+    },
+    {
+      "id": "s_h05",
+      "vehicleId": "v_006",
+      "clientId": "c_005",
+      "ticketId": "tk_h05",
+      "type": "CeramicCoating",
+      "completedAt": "2026-04-24T17:00:00.000Z"
+    },
+    {
+      "id": "s_h06",
+      "vehicleId": "v_001",
+      "clientId": "c_001",
+      "ticketId": "tk_h06",
+      "type": "Both",
+      "completedAt": "2026-04-26T17:00:00.000Z"
+    },
+    {
+      "id": "s_h07",
+      "vehicleId": "v_003",
+      "clientId": "c_002",
+      "ticketId": "tk_h07",
+      "type": "PPF",
+      "completedAt": "2026-04-26T17:00:00.000Z"
+    },
+    {
+      "id": "s_h08",
+      "vehicleId": "v_005",
+      "clientId": "c_004",
+      "ticketId": "tk_h08",
+      "type": "PPF",
+      "completedAt": "2026-04-27T17:00:00.000Z"
+    }
+  ]
+}
