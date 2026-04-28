@@ -21,11 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" {...mantineHtmlProps} className={`${inter.variable} h-full antialiased`}>
+    <html lang="es" {...mantineHtmlProps} className={`${inter.variable} antialiased`}>
       <head>
         <ColorSchemeScript defaultColorScheme="light" />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-dvh flex flex-col">
         <Providers>{children}</Providers>
       </body>
     </html>

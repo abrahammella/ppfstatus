@@ -11,11 +11,11 @@ export default async function LoginPage({
 }) {
   const { next } = await searchParams;
   return (
-    <div className="min-h-screen showroom-bg flex items-center justify-center p-4 sm:p-6 lg:p-10">
-      <div className="w-full max-w-6xl bg-white rounded-[2rem] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)] overflow-hidden grid lg:grid-cols-2 min-h-[640px] ring-1 ring-zinc-200">
+    <div className="min-h-dvh showroom-bg flex items-center justify-center p-3 sm:p-6 lg:p-10">
+      <div className="w-full max-w-6xl bg-white rounded-3xl sm:rounded-[2rem] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)] overflow-hidden grid lg:grid-cols-2 lg:min-h-[640px] ring-1 ring-zinc-200">
         <LoginShowcase />
 
-        <div className="px-7 py-10 sm:px-12 sm:py-14 flex flex-col bg-white">
+        <div className="px-6 py-8 sm:px-12 sm:py-14 flex flex-col bg-white">
           <div className="flex items-center justify-end">
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-brand-red-600" />
@@ -25,26 +25,26 @@ export default async function LoginPage({
             </div>
           </div>
 
-          <div className="mt-10 lg:mt-16">
+          <div className="mt-6 sm:mt-10 lg:mt-16">
             <p className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.18em] uppercase text-brand-red-600">
               <span className="h-px w-6 bg-brand-red-600" />
               Inicia sesión
             </p>
-            <h1 className="mt-4 text-4xl sm:text-5xl font-black uppercase tracking-tight text-zinc-900 leading-[1]">
+            <h1 className="mt-3 text-3xl sm:text-5xl font-black uppercase tracking-tight text-zinc-900 leading-[1]">
               Protege cada<br />
               <span className="text-brand-red-600">detalle</span>
             </h1>
-            <p className="mt-4 text-sm text-zinc-500 max-w-sm leading-relaxed">
+            <p className="mt-3 sm:mt-4 text-sm text-zinc-500 max-w-sm leading-relaxed">
               Plataforma interna para gestionar el flujo completo de PPF y Ceramic Coating, desde la
               recepción hasta la entrega.
             </p>
           </div>
 
-          <div className="mt-8 lg:mt-10 flex-1">
+          <div className="mt-6 sm:mt-8 lg:mt-10 flex-1">
             <LoginForm next={next} />
           </div>
 
-          <div className="mt-8 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4">
+          <div className="mt-6 sm:mt-8 rounded-2xl border border-zinc-200/80 bg-zinc-50 p-4">
             <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-zinc-500">
               Cuentas de demostración
             </p>
